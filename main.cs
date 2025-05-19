@@ -7,19 +7,48 @@ class Maze
 
     public Maze(int rows, int cols)
     {
-        pole = new int[rows, cols]; // делаем массив заданного размера
+        pole = new int[rows, cols]; // Создаем массив заданного размера
+        InitializePole(); // Инициализируем поле с закрашенными стенками
     }
 
-    // Метод для вывода поля
+    // Метод для инициализации поля: стенки закрашены (1), внутри пусто (0)
+    private void InitializePole()
+    {
+        for (int i = 0; i < pole.GetLength(0); i++)
+        {
+            for (int j = 0; j < pole.GetLength(1); j++)
+            {
+                // Закрашиваем верхнюю и нижнюю стенки
+                if (i == 0 || i == pole.GetLength(0) - 1)
+                {
+                    pole[i, j] = 1;
+                }
+                // Закрашиваем левую и правую стенки
+                else if (j == 0 || j == pole.GetLength(1) - 1)
+                {
+                    pole[i, j] = 1;
+                }
+                else
+                {
+                    pole[i, j] = 0; // Внутренние клетки пустые
+                }
+            }
+        }
+    }
+
+    // Тут метод для вывода поля
     public void PrintPole()
     {
         for (int i = 0; i < pole.GetLength(0); i++)
         {
             for (int j = 0; j < pole.GetLength(1); j++)
             {
-                Write(pole[i, j] + " ");
+                if (pole[i, j] == 0)
+                    Write("  ");
+                else
+                    Write("██");
             }
-            WriteLine(); 
+            WriteLine();
         }
     }
 }
@@ -28,11 +57,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        
-        Maze maze = new Maze(3, 6);
+        Maze maze = new Maze(25, 25); // Поле 25 х 25
 
         while (true)
         {
+            Clear();
             WriteLine("- - Логическая Змейка - -");
             WriteLine("[1] - Начать");
             WriteLine("[0] - Выход");
@@ -50,7 +79,7 @@ class Program
             {
                 Clear();
                 WriteLine("Тут будет игра");
-                maze.PrintPole(); 
+                maze.PrintPole();
                 WriteLine("Нажмите любую клавишу для продолжения...");
                 ReadKey();
             }
